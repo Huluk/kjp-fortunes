@@ -6,16 +6,15 @@ require 'mechanize'
 agent = Mechanize.new
 
 page = agent.get('http://kingjamesprogramming.tumblr.com')
+# page = agent.get('http://kjprejects.tumblr.com/')
 
 blockquote = /<\s*blockquote\s*>(.*?)<\s*\/\s*blockquote\s*>/xm
 next_page = /Older/
 
 quotes = page.body.scan(blockquote)
-i = 1
-while page.link_with(:text => next_page) and i < 5
+while page.link_with(:text => next_page)
   page = agent.click(page.link_with(:text => next_page))
   quotes += page.body.scan(blockquote)
-  i += 1
 end
 
 out = []
